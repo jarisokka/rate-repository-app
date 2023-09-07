@@ -20,4 +20,12 @@ export const GET_REPOSITORIES = gql`
   }
 `;
 
+export const GET_AUTHORIZATION = gql`
+  query {
+    me {
+      id
+      username
+    }
+  }
+`;
 // other queries...

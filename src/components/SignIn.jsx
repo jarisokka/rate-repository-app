@@ -1,10 +1,14 @@
 import { StyleSheet, View, Pressable } from 'react-native';
 import { Formik } from 'formik';
+import { Navigate } from 'react-router-native';
+import React, { useState } from 'react';
+import * as yup from 'yup';
+
 import Text from './Text';
 import FormikTextInput from './FormikTextInput';
 import theme from '../theme';
 import useSignIn from '../hooks/useSignIn';
-import * as yup from 'yup';
+
 
 const styles = StyleSheet.create({
   container: {
@@ -37,19 +41,23 @@ const initialValues = {
 
 const SignIn = () => {
   const [signIn] = useSignIn();
+  const [redirectToHome, setRedirectToHome] = useState(false);
 
   const onSubmit = async (values) => {
 
     const { username, password } = values;
-    console.log("name", username)
-    console.log("pass ", password)
     try {
       const { data } = await signIn({ username, password });
-      console.log(data);
+      console.log("user", data);
+      setRedirectToHome(true)
     } catch (e) {
       console.log(e);
     }
   };
+
+  if (redirectToHome) {
+    return <Navigate to="/" replace />;
+  }
 
   return (
     <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
