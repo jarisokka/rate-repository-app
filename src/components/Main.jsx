@@ -13,7 +13,6 @@ const styles = StyleSheet.create({
 });
 
 const Main = () => {
-  console.log("is this running?")
   return (
     <View style={styles.container}>
       <AppBar />
