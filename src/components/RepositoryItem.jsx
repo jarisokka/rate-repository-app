@@ -14,7 +14,7 @@ const RepositoryItem = ({ item }) => {
   });
 
   return (
-    <View style={styles.container}>
+    <View testID="repositoryItem" style={styles.container}>
       <Profile
         ownerAvatarUrl={item.ownerAvatarUrl}
         fullName={item.fullName}
@@ -63,9 +63,9 @@ const Profile = ({ ownerAvatarUrl, fullName, description, language }) => {
         <Image style={styles.profile} source={{uri: ownerAvatarUrl}}></Image>
       </View>
       <View style={styles.detailsContainer}>
-        <Text fontWeight="bold" fontSize="subheading">{fullName}</Text>
-        <Text color="textSecondary">{description}</Text>
-        <Text style={styles.languageContainer}>{language}</Text>        
+        <Text testID="fullName" fontWeight="bold" fontSize="subheading">{fullName}</Text>
+        <Text testID="description" color="textSecondary">{description}</Text>
+        <Text testID="language" style={styles.languageContainer}>{language}</Text>        
       </View>
     </View>
     </>
@@ -85,10 +85,10 @@ const Stats = ({ item }) => {
   return (
     <>
       <View style={styles.containerRow}>
-        <FormatInput text="Stars" value={item.stargazersCount}/>
-        <FormatInput text="Forks" value={item.forksCount}/>
-        <FormatInput text="Reviews" value={item.reviewCount}/>
-        <FormatInput text="Rating" value={item.ratingAverage}/>  
+        <FormatInput testID="stargazersCount" text="Stars" value={item.stargazersCount}/>
+        <FormatInput testID="forksCount" text="Forks" value={item.forksCount}/>
+        <FormatInput testID="reviewCount" text="Reviews" value={item.reviewCount}/>
+        <FormatInput testID="ratingAverage" text="Rating" value={item.ratingAverage}/>  
       </View>
     </>
   )
