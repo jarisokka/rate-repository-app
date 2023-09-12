@@ -1,17 +1,42 @@
-import { View, Image, StyleSheet } from 'react-native';
+import { View, Image, StyleSheet, FlatList } from 'react-native';
 import Text from './Text';
 import theme from '../theme';
+import useRepository from '../hooks/useRepository';
+import Button from './Button';
+import { useParams } from 'react-router-native'
+import * as Linking from 'expo-linking';
+import { format } from 'date-fns'
 
-const RepositoryItem = ({ item }) => {
-
+const RepositoryItem = ({ item, button }) => {
+  const params = useParams();
+  
   const styles = StyleSheet.create({
     container: {
       flexDirection: 'column',
       flexGrow: 1,
-      padding: 5,
-      backgroundColor: 'white' 
+      padding: 15,
+      backgroundColor: 'white', 
     }
   });
+ 
+  if (!item) {
+    const { repository, loading } = useRepository(params.id);
+  
+    if (loading) {
+      return <Text>Loading...</Text>;
+    }
+  
+    if (!repository) {
+      return <Text>Profile not found</Text>;
+    }
+
+    item = repository;
+    return SingleView(item);
+  }
+
+  const openRepo = (url) => {
+    Linking.openURL(url);
+  };
 
   return (
     <View testID="repositoryItem" style={styles.container}>
@@ -22,6 +47,83 @@ const RepositoryItem = ({ item }) => {
         language={item.language}
         />
       <Stats item={item}/>
+      {button ? <Button onPress={() => openRepo(item.url)}>Open in GitHub</Button> : <></>}   
+    </View>
+  )
+}
+
+const SingleView = (item) => {
+  
+  const styles = StyleSheet.create({
+    separator: {
+      height: 10,
+      backgroundColor: '#e1e4e8',
+    }
+  });
+
+  const ItemSeparator = () => <View style={styles.separator} />;
+
+  const reviews = item.reviews.edges.map(e => e.node);
+
+  return (
+    <FlatList
+      data={reviews}
+      renderItem={({ item }) => (<ReviewItem reviews={item} />)}
+      keyExtractor={({ id }) => id}
+      ItemSeparatorComponent={ItemSeparator}
+      ListHeaderComponent={() => <RepositoryItem item={item} button={true} />}
+    />
+  )
+}
+
+const ReviewItem = (reviews) => {
+
+  const styles = StyleSheet.create({
+    container: {
+      flexDirection: 'column',
+      flexGrow: 1,
+      padding: 15,
+      backgroundColor: 'white', 
+    },
+    containerRow: {
+      flexDirection: 'row',
+      marginBottom: 10,
+    },
+    ratingContainer: {
+      width: 50,
+      height: 50,
+      borderRadius: 50 / 2,
+      borderWidth: 2,
+      borderColor: theme.colors.primary,
+      padding: 5,
+      marginRight: 10,
+      marginLeft: 10,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    itemContainer: {
+      flexShrink: 1,
+    },
+    items: {
+      marginBottom: 10,
+    },
+  });
+
+  const dateInput = new Date(reviews.reviews.createdAt);
+  const dateFormated = format(dateInput, 'dd.MM.yyyy');
+
+  return (
+    <View style={styles.container}>
+    <View style={styles.containerRow}>
+      <View style={styles.ratingContainer}>
+        <Text color='primary' fontWeight='bold' fontSize='subheading'>{reviews.reviews.rating}</Text>
+      </View>
+      <View style={styles.itemContainer}>
+        <Text style={styles.items} fontWeight='bold'>{reviews.reviews.user.username}</Text>
+        <Text style={styles.items} color='secondary'>{dateFormated}</Text>
+        <Text style={styles.items}>{reviews.reviews.text}</Text>
+      </View>
+    </View>
     </View>
   )
 }
