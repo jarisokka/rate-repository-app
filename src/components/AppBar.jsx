@@ -39,16 +39,28 @@ const AppBar = () => {
       </Pressable>
       
       {!authenticatedUser ?
+        <>
         <Pressable style={styles.textContainer}> 
           <Link to={"/sign-in"}>
             <Text style={styles.text}>Sign In</Text>
           </Link>
-        </Pressable> :
+        </Pressable>
+        <Pressable style={styles.textContainer}>
+          <Link to={"/sign-up"}>
+            <Text style={styles.text}>Sing Up</Text>
+          </Link>
+        </Pressable> </> :
+        <>
+          <Pressable style={styles.textContainer}>
+            <Link to={"/review"}>
+              <Text style={styles.text}>Create a review</Text>
+            </Link>
+          </Pressable>
         <Pressable style={styles.textContainer}>
             <Link to={"/sign-out"}>
               <Text style={styles.text}>Sign Out</Text>
             </Link>
-        </Pressable> }
+        </Pressable> </>}
     </ScrollView>
   </View>
   );
