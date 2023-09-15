@@ -62,7 +62,6 @@ const Review = () => {
     const { owner, repository, rating, text } = values;
 
     try {
-      console.log("sending")
       const review = await createReview({ repositoryName: repository, ownerName: owner, rating, text});
       navigate(`/${review}`, { replace: true });
     } catch (e) {

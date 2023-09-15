@@ -51,11 +51,16 @@ const AppBar = () => {
           </Link>
         </Pressable> </> :
         <>
-          <Pressable style={styles.textContainer}>
-            <Link to={"/review"}>
-              <Text style={styles.text}>Create a review</Text>
-            </Link>
-          </Pressable>
+        <Pressable style={styles.textContainer}>
+          <Link to={"/review"}>
+            <Text style={styles.text}>Create a review</Text>
+          </Link>
+        </Pressable>
+        <Pressable style={styles.textContainer}>
+          <Link to={"/my-reviews"}>
+            <Text style={styles.text}>My reviews</Text>
+          </Link>
+        </Pressable>
         <Pressable style={styles.textContainer}>
             <Link to={"/sign-out"}>
               <Text style={styles.text}>Sign Out</Text>

@@ -29,6 +29,30 @@ export const GET_AUTHORIZATION = gql`
   }
 `;
 
+export const GET_CURRENT_USER = gql`
+  query {
+    me {
+      id
+      username
+      reviews {
+        edges {
+          node {
+            id
+            repositoryId
+            rating
+            createdAt
+            text
+            user {
+              id
+              username
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
 export const GET_REPOSITORY = gql`
   query repository($repositoryId: ID!) {
     repository(id: $repositoryId) {
